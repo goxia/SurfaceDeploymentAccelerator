@@ -9,10 +9,17 @@
     .\CreateSurfaceWindowsImage.ps1 -ISO <ISO path> -OSSKU Pro -DestinationFolder "C:\Temp" -Device SurfacePro7
 
 .NOTES
+    Author:	  gOxiA
+    Last Update:  2023-11-02
+    Version:	  1.4.0.1
+    
     Author:       Microsoft
     Last Update:  18th July 2023
     Version:      1.4.0.0
 
+    Version 1.4.0.1
+    - Added support for Surface Go 4
+    
     Version 1.4.0.0
     - Changed design and added support to configure the correct ADK and WinPE tools based on ISO version.
     - Corrected the ADK download & installation logic for Windows 10, Windows 11 21H2 and Windows 11 22H2 with required URLs.
@@ -188,7 +195,7 @@ Param(
         Mandatory=$False,
         HelpMessage="Surface device type to add drivers to image for, if not specified no drivers injected - Custom can be used if using with a non-Surface device"
         )]
-        [ValidateSet('SurfacePro4', 'SurfacePro5', 'SurfacePro6', 'SurfacePro7', 'SurfacePro7Plus', 'SurfacePro8', 'SurfacePro9Intel', 'SurfaceLaptop', 'SurfaceLaptop2', 'SurfaceLaptop3Intel', 'SurfaceLaptop3AMD', 'SurfaceLaptop4Intel', 'SurfaceLaptop4AMD', 'SurfaceLaptop5', 'SurfaceLaptopGo', 'SurfaceLaptopStudio', 'SurfaceBook', 'SurfaceBook2', 'SurfaceBook3', 'SurfaceStudio', 'SurfaceStudio2', 'SurfaceGo', 'SurfaceGoLTE', 'SurfaceGo2', 'SurfaceGo3', 'SurfaceHub2', 'Custom')]
+        [ValidateSet('SurfacePro4', 'SurfacePro5', 'SurfacePro6', 'SurfacePro7', 'SurfacePro7Plus', 'SurfacePro8', 'SurfacePro9Intel', 'SurfaceLaptop', 'SurfaceLaptop2', 'SurfaceLaptop3Intel', 'SurfaceLaptop3AMD', 'SurfaceLaptop4Intel', 'SurfaceLaptop4AMD', 'SurfaceLaptop5', 'SurfaceLaptopGo', 'SurfaceLaptopStudio', 'SurfaceBook', 'SurfaceBook2', 'SurfaceBook3', 'SurfaceStudio', 'SurfaceStudio2', 'SurfaceGo', 'SurfaceGoLTE', 'SurfaceGo2', 'SurfaceGo3', 'SurfaceGo4', 'SurfaceHub2', 'Custom')]
         [string]$Device = "SurfacePro8",
 
     [Parameter(
@@ -1513,6 +1520,10 @@ Function Get-LatestDrivers
             $TempDeviceType = "Intel"
             $URL = "https://aka.ms/" + $TempDevice + "/" + $TempDeviceType + "/" + $OSBuild
         }
+	ElseIf ($Device -eq "SurfaceGo4")
+	{
+ 	    $URL = "https://download.microsoft.com/download/6/0/d/60d3ef3a-fde2-48ce-a5f3-dea8ef71560e/SurfaceGo4_Win10_19045_23.072.25310.0.msi"
+ 	}
         Else
         {
             $URL = "https://aka.ms/" + $Device + "/" + $OSBuild
